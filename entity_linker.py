@@ -7,8 +7,6 @@ class DummyEntityLinker:
     def __init__(self):
         self.stopwords_set = set(stopwords.words('english'))
 
-
-
     def set_lemma_for_character(self, item):
         monica = ['monica', 'monica_geller']
         phoebe = ['phoebe']
@@ -81,7 +79,7 @@ class DummyEntityLinker:
             parse_result[idx]['link_idx'] = -1
 
             if (item['lemma'] in link_list_vocab):
-                parse_result['link_idx'] = link_list_vocab.index(item['lemma'])
+                parse_result[idx]['link_idx'] = link_list_vocab.index(item['lemma'])
                 continue
             if (item['lemma'] in self.stopwords_set):
                 continue
