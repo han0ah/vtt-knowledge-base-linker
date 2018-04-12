@@ -23,11 +23,26 @@ def get_episode_list():
     result = DBManager.executeQuery('select * from Friends_Episode_TBL where Season=1')
     return json.dumps(result)
 
+@post('/dialog_list', method=['OPTIONS','POST'])
+@enable_cors
+def get_episode_list():
+    request_str = request.body.read()
+    try:
+        request_str = request_str.decode('utf-8')
+        input_obj = json.loads(request_str)
+    except:
+        return '{"error":"Failed to decode request text"}'
+
+    episodeid = input_obj['episode_id']
+    result = DBManager.executeQuery('select * from Friends_Dialog_TBL where FND_Episode_ID="' + episodeid +'"')
+    return json.dumps(result)
+
 DBManager.initialize(host='kbox.kaist.ac.kr', port=3142, user='root', password='swrcswrc',
                            db='KoreanWordNet2', charset='utf8', autocommit=True)
 
 print ('sever is running')
 run(host=config.host_uri, port=config.port)
+
 
 '''
 from sparql_communicator import QuerySparql
