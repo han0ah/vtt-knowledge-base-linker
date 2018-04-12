@@ -100,6 +100,8 @@ class DummyEntityLinker:
 
             link_list_vocab.append(item['lemma'])
             result = self.reconstruct_high_order_property(result, parse_result[idx]['is_figure'])
+            if (len(result) > 10):
+                result = result[0:10]
             link_list.append({'lemma':item['lemma'],
                               'triple_list':result,
                               'url':refined_url})
