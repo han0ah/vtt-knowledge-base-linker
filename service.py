@@ -45,7 +45,7 @@ def get_episode_list():
     return json.dumps(result)
 
 
-@post('/dialog_list', method=['OPTIONS','POST'])
+@post('/parse_result', method=['OPTIONS','POST'])
 @enable_cors
 def get_episode_list():
     request_str = request.body.read()
