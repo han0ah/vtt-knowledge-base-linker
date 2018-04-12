@@ -31,6 +31,7 @@ function setEpisodeItemClicked(episodeId) {
             $(this).addClass('active')
         }
     })
+    $('.progress-area').show()
     getDialogListOfEpisode(episodeId)
 }
 
@@ -61,6 +62,7 @@ function updateDialogList(data) {
         item.text(dialog_character + ' : ' + dialog_str)
         $('#dialog-list-group').append(item)
     }
+    $('.progress-area').hide()
 }
 
 function setDialogItemClicked(dialogId, speaker) {
