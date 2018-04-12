@@ -6,6 +6,7 @@ import config
 from db_manager import DBManager
 from bottle import run, post, request, response
 from operator import itemgetter
+from entity_linker import DummyEntityLinker
 
 def enable_cors(fn):
     def _enable_cors(*args, **kwargs):
@@ -43,6 +44,28 @@ def get_episode_list():
 
     return json.dumps(result)
 
+
+@post('/dialog_list', method=['OPTIONS','POST'])
+@enable_cors
+def get_episode_list():
+    request_str = request.body.read()
+    try:
+        request_str = request_str.decode('utf-8')
+        input_obj = json.loads(request_str)
+    except:
+        return '{"error":"Failed to decode request text"}'
+
+    speaker = input_obj['speaker']
+    dialog_id = input_obj['dialog_id']
+    result = DBManager.executeQuery('select * from Friends_CONLL_TBL where FND_Dialog_ID=' + str(dialog_id))
+    result.insert(0, {'POS_text': speaker, 'lemma': speaker, 'POS_tag': 'NN'})
+    entityLinker = DummyEntityLinker()
+    link_list, parse_result = entityLinker.entitylink(result)
+    result_obj = {'parse_result': parse_result, 'link_list': link_list}
+
+    return json.dumps(result_obj)
+
+
 DBManager.initialize(host='kbox.kaist.ac.kr', port=3142, user='root', password='swrcswrc',
                            db='KoreanWordNet2', charset='utf8', autocommit=True)
 
@@ -50,11 +73,3 @@ print ('Initialized')
 run(host=config.host_uri, port=config.port)
 
 
-'''
-from sparql_communicator import QuerySparql
-
-a = QuerySparql()
-
-result = a.query('http://kbox.kaist.ac.kr:7190/sparql','http://kbox.kaist.ac.kr/vtt/friends','select ?p ?o { <http://kbox.kaist.ac.kr/vtt/resource/ross_geller> ?p ?o }')
-print (result)
-'''

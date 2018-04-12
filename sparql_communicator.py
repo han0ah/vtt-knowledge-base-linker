@@ -33,7 +33,7 @@ class QuerySparql:
             '''
             request = urllib.request.urlopen(url)
 
-            response_str = request.read()
+            response_str = request.read().decode('utf-8')
             try:
                 response_data = json.loads(response_str)
             except Exception as e:
@@ -71,4 +71,4 @@ class QuerySparql:
             # sleep a bit to preserve endpoint sanity.
             sleep(delay)
 
-        return result_data
+        return result_data, url
