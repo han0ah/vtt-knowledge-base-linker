@@ -5,6 +5,7 @@ import json
 import config
 from db_manager import DBManager
 from bottle import run, post, request, response
+from operator import itemgetter
 
 def enable_cors(fn):
     def _enable_cors(*args, **kwargs):
@@ -35,12 +36,17 @@ def get_episode_list():
 
     episodeid = input_obj['episode_id']
     result = DBManager.executeQuery('select * from Friends_Dialog_TBL where FND_Episode_ID="' + episodeid +'"')
+    for i, item in enumerate(result):
+        result[i]['FND_Dialog_ID'] = int(result[i]['FND_Dialog_ID'])
+        result[i]['Dialog'] = result[i]['Dialog'].decode('utf-8')
+    reulst = sorted(result, key=itemgetter('FND_Dialog_ID'))
+
     return json.dumps(result)
 
 DBManager.initialize(host='kbox.kaist.ac.kr', port=3142, user='root', password='swrcswrc',
                            db='KoreanWordNet2', charset='utf8', autocommit=True)
 
-print ('sever is running')
+print ('Initialized')
 run(host=config.host_uri, port=config.port)
 
 
