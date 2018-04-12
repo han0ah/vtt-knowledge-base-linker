@@ -28,3 +28,12 @@ DBManager.initialize(host='kbox.kaist.ac.kr', port=3142, user='root', password='
 
 print ('sever is running')
 run(host=config.host_uri, port=config.port)
+
+'''
+from sparql_communicator import QuerySparql
+
+a = QuerySparql()
+
+result = a.query('http://kbox.kaist.ac.kr:7190/sparql','http://kbox.kaist.ac.kr/vtt/friends','select ?p ?o { <http://kbox.kaist.ac.kr/vtt/resource/ross_geller> ?p ?o }')
+print (result)
+'''
