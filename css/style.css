@@ -9,3 +9,10 @@ body {
 button:focus {
   outline: none;
 }
+
+.colum-sub-title {
+  margin-bottom: 1rem;
+  font-size:1.3em;
+  font-weight: bold;
+  color: #343a40;
+}
