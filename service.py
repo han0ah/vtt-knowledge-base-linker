@@ -22,6 +22,8 @@ def enable_cors(fn):
 @post('/episode_list', method=['OPTIONS','POST'])
 @enable_cors
 def get_episode_list():
+    DBManager.initialize(host='kbox.kaist.ac.kr', port=3142, user='root', password='swrcswrc',
+                         db='KoreanWordNet2', charset='utf8', autocommit=True)
     result = DBManager.executeQuery('select * from Friends_Episode_TBL where Season=1')
     return json.dumps(result)
 
@@ -36,6 +38,8 @@ def get_episode_list():
         return '{"error":"Failed to decode request text"}'
 
     episodeid = input_obj['episode_id']
+    DBManager.initialize(host='kbox.kaist.ac.kr', port=3142, user='root', password='swrcswrc',
+                         db='KoreanWordNet2', charset='utf8', autocommit=True)
     result = DBManager.executeQuery('select * from Friends_Dialog_TBL where FND_Episode_ID="' + episodeid +'"')
     for i, item in enumerate(result):
         result[i]['FND_Dialog_ID'] = int(result[i]['FND_Dialog_ID'])
@@ -57,6 +61,8 @@ def get_episode_list():
 
     speaker = input_obj['speaker']
     dialog_id = input_obj['dialog_id']
+    DBManager.initialize(host='kbox.kaist.ac.kr', port=3142, user='root', password='swrcswrc',
+                         db='KoreanWordNet2', charset='utf8', autocommit=True)
     result = DBManager.executeQuery('select * from Friends_CONLL_TBL where FND_Dialog_ID=' + str(dialog_id))
     result.insert(0, {'POS_text': speaker, 'lemma': speaker, 'POS_tag': 'NN'})
     entityLinker = DummyEntityLinker()
